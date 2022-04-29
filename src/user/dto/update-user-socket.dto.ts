@@ -1,6 +1,6 @@
 import { IsString } from "class-validator";
 
-export class UpdateSocketUserDto {
+export class UpdateUserSocketDto {
     @IsString()
     public readonly socket_id: string;
 }

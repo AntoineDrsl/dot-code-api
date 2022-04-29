@@ -1,4 +1,5 @@
-import { UpdateSocketUserDto } from './../dto/update-socket-user-dto';
+import { UpdateUserPseudoDto } from './../dto/update-user-pseudo.dto';
+import { UpdateUserSocketDto } from '../dto/update-user-socket.dto';
 import { Room } from '../../room/entity/room.entity';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from "@nestjs/typeorm";
@@ -37,9 +38,14 @@ export class UserService {
         return user;
     }
 
-    public async updateUserSocket(id: number, updateSocketUserDto: UpdateSocketUserDto)
+    public async updateUserSocket(id: number, updateUserSocketDto: UpdateUserSocketDto)
     {
-        return this._userRepository.updateUserSocket(id, updateSocketUserDto);
+        return this._userRepository.updateUserSocket(id, updateUserSocketDto);
+    }
+
+    public async updateUserPseudo(id: number, updateUserPseudoDto: UpdateUserPseudoDto)
+    {
+        return this._userRepository.updateUserPseudo(id, updateUserPseudoDto);
     }
 
     /**

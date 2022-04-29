@@ -1,4 +1,5 @@
-import { UpdateSocketUserDto } from './../dto/update-socket-user-dto';
+import { UpdateUserPseudoDto } from './../dto/update-user-pseudo.dto';
+import { UpdateUserSocketDto } from '../dto/update-user-socket.dto';
 import { User } from './../entity/user.entity';
 import { RoomService } from 'src/room/service/room.service';
 import { ValidationPipe, Get } from '@nestjs/common';
@@ -45,12 +46,24 @@ export class UserController {
      * Update user socket
      *
      * @param id
-     * @param updateUserDto
+     * @param updateUserSocketDto
      */
     @Patch(':id/socket')
-    public async updateSocket(@Param('id') id: number, @Body() updateSocketUserDto: UpdateSocketUserDto)
+    public async updateSocket(@Param('id') id: number, @Body() updateUserSocketDto: UpdateUserSocketDto)
     {
-        return this._userService.updateUserSocket(id, updateSocketUserDto);
+        return this._userService.updateUserSocket(id, updateUserSocketDto);
+    }
+
+    /**
+     * Update user pseudo
+     *
+     * @param id
+     * @param updateUserSocketDto
+     */
+    @Patch(':id/pseudo')
+    public async updatePseudo(@Param('id') id: number, @Body() updateUserPseudoDto: UpdateUserPseudoDto)
+    {
+        return this._userService.updateUserPseudo(id, updateUserPseudoDto);
     }
 
     /**

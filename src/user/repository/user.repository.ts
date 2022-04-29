@@ -1,4 +1,5 @@
-import { UpdateSocketUserDto } from './../dto/update-socket-user-dto';
+import { UpdateUserPseudoDto } from './../dto/update-user-pseudo.dto';
+import { UpdateUserSocketDto } from '../dto/update-user-socket.dto';
 import { Repository, EntityRepository } from "typeorm";
 import { User } from "../entity/user.entity";
 import { CreateGuestUserDto } from "../dto/create-guest-user.dto";
@@ -51,12 +52,30 @@ export class UserRepository extends Repository<User> {
      * @param updateSocketUserDto 
      * @returns 
      */
-    public async updateUserSocket(id: number, updateSocketUserDto: UpdateSocketUserDto)
+    public async updateUserSocket(id: number, updateUserSocketDto: UpdateUserSocketDto)
     {
-        const { socket_id } = updateSocketUserDto;
+        const { socket_id } = updateUserSocketDto;
 
         const user = this.create({
             socket_id
+        });
+
+        return await this.update(id, user);
+    }
+
+    /**
+     * Update user socket
+     * 
+     * @param id 
+     * @param updateUserPseudoDto 
+     * @returns 
+     */
+    public async updateUserPseudo(id: number, updateUserPseudoDto: UpdateUserPseudoDto)
+    {
+        const { pseudo } = updateUserPseudoDto;
+
+        const user = this.create({
+            pseudo
         });
 
         return await this.update(id, user);
