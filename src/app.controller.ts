@@ -1,11 +1,12 @@
 import { NoPrintException } from './exceptions/NoPrintException';
 import { BadCodeException } from './exceptions/BadCodeException';
 import { BadResultException } from './exceptions/BadResultException';
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
 import { execSync } from 'child_process';
 import {v4 as uuidv4} from 'uuid';
 import * as fs from 'fs';
+import { LocalAuthGuard } from "./auth/guard/local-auth.guard";
 
 @Controller()
 export class AppController {

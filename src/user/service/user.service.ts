@@ -9,6 +9,7 @@ import { CreateGuestUserDto } from "../dto/create-guest-user.dto";
 import { UserRepository } from "../repository/user.repository";
 import { ConnectInRoomUserDto } from "../dto/connect-in-room-user.dto";
 import { FindOneOptions } from "typeorm";
+import { CreateUserDto } from "../dto/create-user.dto";
 
 @Injectable()
 export class UserService {
@@ -32,6 +33,22 @@ export class UserService {
         return user;
     }
 
+    /**
+     * Return a user by parameter
+     *
+     * @param param
+     */
+    public async getUserByParam(param: FindOneOptions)
+    {
+        return await this._userRepository.findOne(param);
+    }
+
+    /**
+     * Add User to a Room
+     *
+     * @param id
+     * @param room
+     */
     public async updateUserRoom(id: number, room: Room): Promise<User>
     {
         const user = await this.getUserById(id);
@@ -68,6 +85,17 @@ export class UserService {
     public createGuestUser(userGuest: CreateGuestUserDto)
     {
         return this._userRepository.createGuestUser(userGuest);
+    }
+
+    /**
+     * Create a user when he registers
+     *
+     * @param user
+     * @param id
+     */
+    public createUser(user: CreateUserDto, id: number)
+    {
+        return this._userRepository.createUser(user, id);
     }
 
     /**

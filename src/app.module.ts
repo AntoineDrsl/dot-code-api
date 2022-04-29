@@ -8,6 +8,8 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import { GameModule } from './game/game.module';
 import { TeamModule } from './team/team.module';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
+import { SharedModule } from './shared/shared.module';
 
 @Module({
   imports: [
@@ -34,7 +36,9 @@ import { ConfigModule } from '@nestjs/config';
     RoomModule,
     UserModule,
     GameModule,
-    TeamModule
+    TeamModule,
+    AuthModule,
+    SharedModule
   ],
   controllers: [AppController],
   providers: [AppService, EventGateway],

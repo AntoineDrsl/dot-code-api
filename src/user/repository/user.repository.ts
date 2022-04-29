@@ -7,6 +7,7 @@ import { CreateGuestUserDto } from "../dto/create-guest-user.dto";
 import { uuid } from "uuidv4";
 import { Room } from "../../room/entity/room.entity";
 import { ConnectInRoomUserDto } from "../dto/connect-in-room-user.dto";
+import { CreateUserDto } from "../dto/create-user.dto";
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
@@ -26,6 +27,23 @@ export class UserRepository extends Repository<User> {
 
         return await this.save(user);
     }
+
+    /**
+     * Création d'un utilisateur entier
+     *
+     * @param userDto
+     * @param id
+     */
+    public async createUser(userDto: CreateUserDto, id: number)
+    {
+        const user = this.create({
+            is_guest: false,
+            ...userDto
+        });
+
+        return await this.update(id, user);
+    }
+
 
     /**
      * Update a user when he connects into a room
