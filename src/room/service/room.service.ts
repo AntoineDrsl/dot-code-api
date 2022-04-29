@@ -34,7 +34,7 @@ export class RoomService {
         });
 
         if(!room) {
-            throw new NotFoundException(`Task with ID "${pin}" not found`);
+            throw new NotFoundException(`Room with ID "${pin}" not found`);
         }
 
         return room;

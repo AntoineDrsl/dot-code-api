@@ -1,3 +1,4 @@
+import { RoomService } from 'src/room/service/room.service';
 import { Logger } from '@nestjs/common';
 import {
   ConnectedSocket,
@@ -10,17 +11,37 @@ import {
   MessageBody
 } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
-import { Server } from 'http';
+import { Server } from 'socket.io';
 
 @WebSocketGateway({ cors: true })
 export class EventGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 
-  // public roomController: RoomController = new RoomController(new RoomService(new RoomRepository), new UserService(new UserRepository));
+  constructor(
+    private readonly _roomService: RoomService
+  ) {}
 
-  // Utilisateurs qui sont connectés à une room
-  public usersConnectedToARoom: {socketId: string, pin: string, username?: string}[] = []
+  @SubscribeMessage('newConnection')
+  public async userCreatesRoom(@ConnectedSocket() client: Socket, @MessageBody() body)
+  {
+    client.join(body.pin);
+  }
 
+  @SubscribeMessage('userSendPseudo')
+  public async userSendPseudo(@ConnectedSocket() client: Socket, @MessageBody() body)
+  {
+    const room = await this._roomService.getRoomDetailsByPin(body.pin);
 
+    client.broadcast.to(body.pin).emit('userSendPseudo', room);
+  }
+  
+  @SubscribeMessage('userJoinsRoom')
+  public async userJoinsRoom(@ConnectedSocket() client: Socket, @MessageBody() body)
+  {
+    const room = await this._roomService.getRoomDetailsByPin(body.pin);
+
+    client.join(body.pin);
+    client.broadcast.to(body.pin).emit('userJoinsRoom', room);
+  }
   
   /** Reception des sockets */
 
@@ -241,7 +262,7 @@ export class EventGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
   /**
    * Connexion à socket
    */
-  @WebSocketServer() server: Server;
+  // @WebSocketServer() server: Server;
   private logger: Logger = new Logger('AppGateway');
 
   public afterInit(server: Server) {
