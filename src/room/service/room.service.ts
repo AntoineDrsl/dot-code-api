@@ -15,18 +15,23 @@ export class RoomService {
 
     public async getRoomById(id: number): Promise<Room>
     {
-        const room = await this._roomRepository.findOne({ where: { id } });
+        const room = await this._roomRepository.findOne({ 
+            where: { id }
+        });
 
         if(!room) {
-            throw new NotFoundException(`Task with ID "${id}" not found`);
+            throw new NotFoundException(`Room with ID "${id}" not found`);
         }
 
         return room;
     }
 
-    public async getRoomByPin(pin: string): Promise<Room>
+    public async getRoomDetailsByPin(pin: string): Promise<Room>
     {
-        const room = await this._roomRepository.findOne({ where: { pin } });
+        const room = await this._roomRepository.findOne({ 
+            where: { pin }, 
+            relations: ['teams', 'teams.users', 'users'],
+        });
 
         if(!room) {
             throw new NotFoundException(`Task with ID "${pin}" not found`);

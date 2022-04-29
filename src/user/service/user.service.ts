@@ -1,3 +1,4 @@
+import { Team } from './../../team/entity/team.entity';
 import { UpdateUserPseudoDto } from './../dto/update-user-pseudo.dto';
 import { UpdateUserSocketDto } from '../dto/update-user-socket.dto';
 import { Room } from '../../room/entity/room.entity';
@@ -46,6 +47,14 @@ export class UserService {
     public async updateUserPseudo(id: number, updateUserPseudoDto: UpdateUserPseudoDto)
     {
         return this._userRepository.updateUserPseudo(id, updateUserPseudoDto);
+    }
+
+    public async updateUserTeam(id: number, team: Team)
+    {
+        const user = await this._userRepository.update(id, {
+            team: team
+        });
+        return user;
     }
 
     /**

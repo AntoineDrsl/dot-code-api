@@ -33,10 +33,10 @@ export class RoomController {
         return this._roomService.getRoomById(id);
     }
 
-    @Get('/pin/:pin')
-    public getRoomByPin(@Query('pin') pin: string): Promise<Room>
+    @Get('pin/:pin')
+    public getRoomDetailsByPin(@Param('pin') pin: string): Promise<Room>
     {
-        return this._roomService.getRoomByPin(pin);
+        return this._roomService.getRoomDetailsByPin(pin);
     }
 
     @Post()
@@ -63,11 +63,11 @@ export class RoomController {
         const teams = await this._teamService.createTeams([
             {
                 room: room.id,
-                name: 'Team 1'
+                name: 'Ixion'
             },
             {
                 room: room.id,
-                name: 'Team 2'
+                name: 'Météion'
             }
         ]);
         room.teams = teams;

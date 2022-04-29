@@ -1,3 +1,5 @@
+import { TeamService } from './../../team/service/team.service';
+import { UpdateUserTeamDto } from '../dto/update-user-team.dto';
 import { UpdateUserPseudoDto } from './../dto/update-user-pseudo.dto';
 import { UpdateUserSocketDto } from '../dto/update-user-socket.dto';
 import { User } from './../entity/user.entity';
@@ -15,7 +17,8 @@ export class UserController {
 
     constructor(
         private readonly _userService: UserService,
-        private readonly _roomService: RoomService
+        private readonly _roomService: RoomService,
+        private readonly _teamService: TeamService
     ) {
     }
 
@@ -67,10 +70,10 @@ export class UserController {
     }
 
     /**
-     * Update user when he joins a room
+     * User joins room
      *
      * @param id
-     * @param updateUserDto
+     * @param connectInRoomUserDto
      */
     @Patch(':id/connect')
     public async connect(@Param('id') id: number, @Body() connectInRoomUserDto: ConnectInRoomUserDto)
@@ -78,6 +81,20 @@ export class UserController {
         const room = await this._roomService.getRoomById(connectInRoomUserDto.room_id);
 
         return this._userService.updateUserForRoom(id, connectInRoomUserDto, room);
+    }
+
+    /**
+     * User joins team
+     *
+     * @param id
+     * @param updateUserDto
+     */
+    @Patch(':id/join-team')
+    public async joinTeam(@Param('id') id: number, @Body() updateUserTeamDto: UpdateUserTeamDto)
+    {
+        const team = await this._teamService.getTeamById(updateUserTeamDto.team_id);
+
+        return this._userService.updateUserTeam(id, team);
     }
 
     /**

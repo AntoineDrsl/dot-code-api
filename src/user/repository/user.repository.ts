@@ -1,3 +1,4 @@
+import { Team } from './../../team/entity/team.entity';
 import { UpdateUserPseudoDto } from './../dto/update-user-pseudo.dto';
 import { UpdateUserSocketDto } from '../dto/update-user-socket.dto';
 import { Repository, EntityRepository } from "typeorm";
