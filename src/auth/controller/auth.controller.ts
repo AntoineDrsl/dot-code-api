@@ -4,6 +4,7 @@ import { hashPassword } from "../../shared/functions/hash-password";
 import { CreateUserDto } from "../../user/dto/create-user.dto";
 import { LocalAuthGuard } from "../guard/local-auth.guard";
 import { AuthService } from "../service/auth.service";
+import { User } from "../../user/entity/user.entity";
 
 
 @Controller('auth')
@@ -17,8 +18,16 @@ export class AuthController {
 
     @UseGuards(LocalAuthGuard)
     @Post('/login')
-    public async login(@Request() req)
+    public async login(@Request() req, @Query() query)
     {
+        // We need to remove the User Guest that might have been created
+        if (('id' in query) && (req.user.id != query.id)) {
+            const user = await this._userService.getOne(query.id, {});
+            if (user.is_guest) {
+                await this._userService.removeUserById(user);
+            }
+        }
+
         //If the request pass the guard passport then call the JWT function to generate JWT Token
         return this._authService.loginJwt(req.user);
     }
@@ -30,9 +39,9 @@ export class AuthController {
         // When a user register we might get the localstorage to get the data that are already store
         // But if we pass directly by Postman we don't have a guest user, so we return an error
         if (!query || !query.id) {
-            return {error: "No localstorage pass"};
+            return {error: "No localstorage passed"};
         }
-        const userGuest = await this._userService.getUserById(query.id);
+        const userGuest: User = await this._userService.getUserById(query.id);
 
         // If user is not a guest then we stop here
         if (!userGuest.is_guest) {

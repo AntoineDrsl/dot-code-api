@@ -66,10 +66,10 @@ export class UserRepository extends Repository<User> {
 
     /**
      * Update user socket
-     * 
-     * @param id 
-     * @param updateSocketUserDto 
-     * @returns 
+     *
+     * @param id
+     * @param updateUserSocketDto
+     * @returns
      */
     public async updateUserSocket(id: number, updateUserSocketDto: UpdateUserSocketDto)
     {

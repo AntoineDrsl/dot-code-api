@@ -140,4 +140,14 @@ export class UserService {
     {
         return this._userRepository.update(id, { team: null });
     }
+
+    /**
+     * Remove a user by his ID
+     *
+     * @param user
+     */
+    public async removeUserById(user: User)
+    {
+        return this._userRepository.remove(user);
+    }
 }
