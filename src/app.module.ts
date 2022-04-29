@@ -6,7 +6,7 @@ import { RoomModule } from './room/room.module';
 import { UserModule } from './user/user.module';
 import {TypeOrmModule} from "@nestjs/typeorm";
 import { GameModule } from './game/game.module';
-import { TeamsModule } from './team/teams.module';
+import { TeamModule } from './team/team.module';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
@@ -34,7 +34,7 @@ import { ConfigModule } from '@nestjs/config';
     RoomModule,
     UserModule,
     GameModule,
-    TeamsModule
+    TeamModule
   ],
   controllers: [AppController],
   providers: [AppService, EventGateway],

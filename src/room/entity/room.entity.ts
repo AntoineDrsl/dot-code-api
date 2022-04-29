@@ -9,6 +9,9 @@ import {Team} from "../../team/entity/team.entity";
 export class Room {
     @PrimaryGeneratedColumn()
     id: number;
+    
+    @Column()
+    slug: string
 
     @OneToOne(() => User)
     @JoinColumn({ name: 'owner_id' })
@@ -23,9 +26,6 @@ export class Room {
 
     @OneToMany(() => User, (user: User) => user.room)
     users: User[]
-
-    @Column()
-    slug: string
 
     @Column({ nullable: true })
     mode: ModeEnum;

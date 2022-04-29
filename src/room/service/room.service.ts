@@ -55,7 +55,6 @@ export class RoomService {
         });
 
         if(!room.users?.length) {
-            console.log('here');
             await this._roomRepository.update(room.id, { owner: null });
         } else {
             const owner = room.users[Math.floor(Math.random() * room.users.length)];

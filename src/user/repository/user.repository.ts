@@ -1,3 +1,4 @@
+import { UpdateSocketUserDto } from './../dto/update-socket-user-dto';
 import { Repository, EntityRepository } from "typeorm";
 import { User } from "../entity/user.entity";
 import { CreateGuestUserDto } from "../dto/create-guest-user.dto";
@@ -31,14 +32,31 @@ export class UserRepository extends Repository<User> {
      * @param userUpdate
      * @param room
      */
-    public async updateUserForRoom(id: string, userUpdate: ConnectInRoomUserDto, room: Room)
+    public async updateUserForRoom(id: number, connectInRoomUserDto: ConnectInRoomUserDto, room: Room)
     {
-
-        const { pseudo } = userUpdate;
+        const { pseudo } = connectInRoomUserDto;
 
         const user = this.create({
             room: room,
             pseudo
+        });
+
+        return await this.update(id, user);
+    }
+
+    /**
+     * Update user socket
+     * 
+     * @param id 
+     * @param updateSocketUserDto 
+     * @returns 
+     */
+    public async updateUserSocket(id: number, updateSocketUserDto: UpdateSocketUserDto)
+    {
+        const { socket_id } = updateSocketUserDto;
+
+        const user = this.create({
+            socket_id
         });
 
         return await this.update(id, user);

@@ -1,3 +1,4 @@
+import { TeamService } from './../../team/service/team.service';
 import { UserService } from '../../user/service/user.service';
 import { CreateRoomDto } from '../dto/create-room.dto';
 import { RoomService } from '../service/room.service';
@@ -22,7 +23,8 @@ export class RoomController {
 
     constructor(
         private readonly _roomService: RoomService,
-        private readonly _userService: UserService
+        private readonly _userService: UserService,
+        private readonly _teamService: TeamService
     ) {}
 
     @Get(':id')
@@ -43,6 +45,32 @@ export class RoomController {
     {
         // Create room
         const room = await this._roomService.createRoom(createRoomDto);
+
+        // Update user room
+        await this._userService.updateUserRoom(room.owner.id, room);
+
+        return room;
+    }
+
+    @Post('/with-teams')
+    @UsePipes(new ValidationPipe())
+    public async createRoomWithTeams(@Body() createRoomDto: CreateRoomDto): Promise<Room>
+    {
+        // Create room
+        const room = await this._roomService.createRoom(createRoomDto);
+
+        // Create teams
+        const teams = await this._teamService.createTeams([
+            {
+                room: room.id,
+                name: 'Team 1'
+            },
+            {
+                room: room.id,
+                name: 'Team 2'
+            }
+        ]);
+        room.teams = teams;
 
         // Update user room
         await this._userService.updateUserRoom(room.owner.id, room);

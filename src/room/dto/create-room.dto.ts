@@ -2,5 +2,5 @@ import { IsNumber } from 'class-validator';
 
 export class CreateRoomDto {
     @IsNumber()
-    public owner;
+    public owner_id;
 }

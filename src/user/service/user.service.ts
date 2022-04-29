@@ -1,3 +1,4 @@
+import { UpdateSocketUserDto } from './../dto/update-socket-user-dto';
 import { Room } from '../../room/entity/room.entity';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from "@nestjs/typeorm";
@@ -36,6 +37,11 @@ export class UserService {
         return user;
     }
 
+    public async updateUserSocket(id: number, updateSocketUserDto: UpdateSocketUserDto)
+    {
+        return this._userRepository.updateUserSocket(id, updateSocketUserDto);
+    }
+
     /**
      * Create a guest user (When he connects on the landing page)
      *
@@ -53,7 +59,7 @@ export class UserService {
      * @param updateUserDto
      * @param room
      */
-    public updateUserForRoom(userId: string, updateUserDto: ConnectInRoomUserDto, room: Room)
+    public updateUserForRoom(userId: number, updateUserDto: ConnectInRoomUserDto, room: Room)
     {
         return this._userRepository.updateUserForRoom(userId, updateUserDto, room)
     }
@@ -77,5 +83,15 @@ export class UserService {
     public updateNullRoom(id: string)
     {
         return this._userRepository.update(id, {room: null});
+    }
+
+    /**
+     * Remove team on user
+     *
+     * @param id
+     */
+    public updateNullTeam(id: string)
+    {
+        return this._userRepository.update(id, { team: null });
     }
 }

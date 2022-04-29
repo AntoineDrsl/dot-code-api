@@ -18,13 +18,15 @@ export class RoomRepository extends Repository<Room> {
     
     public async createRoom(createRoomDto: CreateRoomDto, pin: string, name: string): Promise<Room>
     {
-        const { owner } = createRoomDto;
+        const { owner_id } = createRoomDto;
 
         const room = this.create({
             slug: uuid(),
             pin,
             name,
-            owner,
+            owner: {
+                id: owner_id
+            },
             access: AccessEnum.PRIVATE,
             status: StatusEnum.ON
         });

@@ -1,5 +1,7 @@
+import { UpdateSocketUserDto } from './../dto/update-socket-user-dto';
+import { User } from './../entity/user.entity';
 import { RoomService } from 'src/room/service/room.service';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, Get } from '@nestjs/common';
 import { UsePipes } from '@nestjs/common';
 import { Body, Controller, Post, Patch, Param } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
@@ -17,6 +19,17 @@ export class UserController {
     }
 
     /**
+     * Get user by id
+     * 
+     * @param id
+     */
+    @Get(':id')
+    public getUserById(@Param('id') id: number): Promise<User>
+    {
+        return this._userService.getUserById(id);
+    }
+
+    /**
      * Create user guest when he connects on the landing page
      *
      * @param userGuestDto
@@ -29,17 +42,29 @@ export class UserController {
     }
 
     /**
+     * Update user socket
+     *
+     * @param id
+     * @param updateUserDto
+     */
+    @Patch(':id/socket')
+    public async updateSocket(@Param('id') id: number, @Body() updateSocketUserDto: UpdateSocketUserDto)
+    {
+        return this._userService.updateUserSocket(id, updateSocketUserDto);
+    }
+
+    /**
      * Update user when he joins a room
      *
      * @param id
      * @param updateUserDto
      */
     @Patch(':id/connect')
-    public async connect(@Param('id') id: string, @Body() updateUserDto: ConnectInRoomUserDto)
+    public async connect(@Param('id') id: number, @Body() connectInRoomUserDto: ConnectInRoomUserDto)
     {
-        const room = await this._roomService.getRoomById(updateUserDto.room_id);
+        const room = await this._roomService.getRoomById(connectInRoomUserDto.room_id);
 
-        return this._userService.updateUserForRoom(id, updateUserDto, room);
+        return this._userService.updateUserForRoom(id, connectInRoomUserDto, room);
     }
 
     /**
@@ -52,18 +77,25 @@ export class UserController {
     {
         // Get user
         const user = await this._userService.getOne(id, {
-            relations: ['room']
+            relations: ['room', 'team']
         });
 
-        if(!user || !user.room) {
+        if(!user) {
             return false;
         }
 
-        // Disconnect user from room
-        await this._userService.updateNullRoom(id);
+        if(user.team) {
+            // Disconnect user from team
+            await this._userService.updateNullTeam(id);
+        }
 
-        // Get room and update owner
-        await this._roomService.changeOwnerRandom(user.room.id);
+        if(user.room) {
+            // Disconnect user from room
+            await this._userService.updateNullRoom(id);
+    
+            // Get room and update owner
+            await this._roomService.changeOwnerRandom(user.room.id);
+        }
 
         return {"success": `Room id have been successfully removed from the user ${id}`}
     }
