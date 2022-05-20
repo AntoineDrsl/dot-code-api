@@ -1,6 +1,7 @@
 import {Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, OneToMany} from 'typeorm';
 import {ModeEnum} from "../enums/mode.enum";
-import {AccessEnum, StatusEnum} from "../enums/access.enum";
+import {AccessEnum} from "../enums/access.enum";
+import { StatusEnum } from '../enums/status.enum';
 import {User} from "../../user/entity/user.entity";
 import {Game} from "../../game/entity/game.entity";
 import {Team} from "../../team/entity/team.entity";
@@ -38,6 +39,9 @@ export class Room {
 
     @Column()
     access: AccessEnum;
+
+    @Column({ default: false })
+    has_started: boolean;
 
     @Column()
     status: StatusEnum;

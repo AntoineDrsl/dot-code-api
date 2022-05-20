@@ -10,7 +10,7 @@ import { User } from "../../user/entity/user.entity";
 @Controller('auth')
 export class AuthController {
 
-    constructor(
+    constructor( 
         private readonly _userService: UserService,
         private readonly _authService: AuthService
     ) {

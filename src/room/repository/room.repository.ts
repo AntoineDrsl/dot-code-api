@@ -1,4 +1,5 @@
-import { AccessEnum, StatusEnum } from '../enums/access.enum';
+import { AccessEnum } from '../enums/access.enum';
+import { StatusEnum } from '../enums/status.enum';
 import { uuid } from 'uuidv4';
 import { CreateRoomDto } from '../dto/create-room.dto';
 import { EntityRepository, Repository, createQueryBuilder } from "typeorm";
