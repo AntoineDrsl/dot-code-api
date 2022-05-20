@@ -61,7 +61,7 @@ export class UserController {
      * Update user pseudo
      *
      * @param id
-     * @param updateUserSocketDto
+     * @param updateUserPseudoDto
      */
     @Patch(':id/pseudo')
     public async updatePseudo(@Param('id') id: number, @Body() updateUserPseudoDto: UpdateUserPseudoDto)
