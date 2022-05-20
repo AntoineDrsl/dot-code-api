@@ -16,12 +16,14 @@ import { Server } from 'socket.io';
 @WebSocketGateway({ cors: true })
 export class EventGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 
+  @WebSocketServer() server: Server;
+
   constructor(
     private readonly _roomService: RoomService
   ) {}
 
-  @SubscribeMessage('newConnection')
-  public async userCreatesRoom(@ConnectedSocket() client: Socket, @MessageBody() body)
+  @SubscribeMessage('joinRoom')
+  public async joinRoom(@ConnectedSocket() client: Socket, @MessageBody() body)
   {
     client.join(body.pin);
   }
@@ -41,6 +43,14 @@ export class EventGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
 
     client.join(body.pin);
     client.broadcast.to(body.pin).emit('userJoinsRoom', room);
+  }
+
+  @SubscribeMessage('userJoinsTeam')
+  public async userJoinsTeam(@ConnectedSocket() client: Socket, @MessageBody() body)
+  {
+    const room = await this._roomService.getRoomDetailsByPin(body.pin);
+
+    this.server.sockets.in(body.pin).emit('userJoinsTeam', room)
   }
   
   /** Reception des sockets */
