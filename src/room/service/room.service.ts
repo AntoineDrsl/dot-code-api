@@ -53,6 +53,11 @@ export class RoomService {
         this._roomRepository.update(room_id, { owner: owner });
     }
 
+    public async changeHasStarted(room_id: number, has_started: boolean)
+    {
+        this._roomRepository.update(room_id, { has_started: has_started });
+    }
+
     public async changeOwnerRandom(room_id: number)
     {
         const room = await this._roomRepository.findOne(room_id, {

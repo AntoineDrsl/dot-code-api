@@ -52,6 +52,26 @@ export class EventGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
 
     this.server.sockets.in(body.pin).emit('userJoinsTeam', room)
   }
+
+  @SubscribeMessage('launchGame')
+  public async launchGame(@ConnectedSocket() client: Socket, @MessageBody() body)
+  {
+    // Get room
+    const room = await this._roomService.getRoomDetailsByPin(body.pin);
+
+    if(room.has_started) {
+      return { error: "Room has already started" };
+    }
+
+    if(!room.teams[0].users?.length || !room.teams[1].users?.length) {
+      return { error: "A team is empty" }
+    }
+
+    // Update room
+    this._roomService.changeHasStarted(room.id, true);
+
+    this.server.sockets.in(body.pin).emit('launchGame', room);
+  }
   
   /** Reception des sockets */
 
@@ -180,8 +200,8 @@ export class EventGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
   * @param client 
   * @param body 
   */
-  @SubscribeMessage('launchGame')
-  public launchGame(@ConnectedSocket() client: Socket, @MessageBody() body)
+  @SubscribeMessage('test')
+  public test(@ConnectedSocket() client: Socket, @MessageBody() body)
   {
     // const res = this.roomController.launchGame(body.pin);
     //
