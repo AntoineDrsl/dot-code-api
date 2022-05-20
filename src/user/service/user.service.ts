@@ -23,7 +23,7 @@ export class UserService {
     {
         const user = await this._userRepository.findOne({ 
             where: { id }, 
-            relations: ['room']
+            relations: ['room', 'team']
         });
 
         if(!user) {

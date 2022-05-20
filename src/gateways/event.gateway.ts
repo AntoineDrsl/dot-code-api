@@ -72,6 +72,29 @@ export class EventGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
 
     this.server.sockets.in(body.pin).emit('launchGame', room);
   }
+
+  @SubscribeMessage('userCursorChange')
+  public userCursorChange(@ConnectedSocket() client: Socket, @MessageBody() body) {
+    client.broadcast.to(body.pin).emit('userCursorChange', {
+      user: body.user,
+      position: body.position
+    });
+  }
+
+  @SubscribeMessage('newTextInsert')
+  public newTextInsert(@ConnectedSocket() client: Socket, @MessageBody() body) {
+    client.to(body.pin).emit('newTextInsert', body);
+  }
+
+  @SubscribeMessage('newTextDelete')
+  public newTextDelete(@ConnectedSocket() client: Socket, @MessageBody() body) {
+    client.to(body.pin).emit('newTextDelete', body);
+  }
+
+  @SubscribeMessage('onTab')
+  public onTab(@ConnectedSocket() client: Socket, @MessageBody() body) {
+    client.to(body.pin).emit('onTab', body);
+  }
   
   /** Reception des sockets */
 
@@ -228,59 +251,6 @@ export class EventGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
   //   }
   //
   //   return res;
-  }
-
-  /**
-   * On envoie la position du nouveau cursor à l'ensemble des users de la ROOM à l'exception de l'envoyeur
-   * 
-   * @param client 
-   * @param body 
-   */
-  @SubscribeMessage('gamerCursorChange')
-  public gamerCursorChange(@ConnectedSocket() client: Socket, @MessageBody() body) {
-    // client.to(body.pin).emit('gamerCursorChange', body);
-  }
-
-  /**
-   * Lorsqu'on ecrit dans l'ide
-   * 
-   * @param client 
-   * @param values 
-   */
-  @SubscribeMessage('newTextInsert')
-  public onTextInsert(
-    @ConnectedSocket() client: Socket,
-    @MessageBody() body,
-  ) {
-    // client.to(body.pin).emit('newTextInsert', body);
-  }
-
-  /**
-   * Lorsqu'on supprime dans l'ide
-   * 
-   * @param client 
-   * @param values 
-   */
-  @SubscribeMessage('newTextDelete')
-  public onTextDelete(
-    @ConnectedSocket() client: Socket,
-    @MessageBody() body,
-  ) {
-    // client.to(body.pin).emit('newTextDelete', body);
-  }
-
-  /**
-   * Lorsqu'on supprime dans l'ide
-   * 
-   * @param client 
-   * @param values 
-   */
-  @SubscribeMessage('onTab')
-  public onTab(
-    @ConnectedSocket() client: Socket,
-    @MessageBody() body,
-  ) {
-   // client.to(body.pin).emit('onTab', body);
   }
 
   /**
