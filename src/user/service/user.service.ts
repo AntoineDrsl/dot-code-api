@@ -93,9 +93,9 @@ export class UserService {
      * @param user
      * @param id
      */
-    public createUser(user: CreateUserDto, id: number)
+    public updateGuestIntoUser(user: CreateUserDto, id: number)
     {
-        return this._userRepository.createUser(user, id);
+        return this._userRepository.updateGuestIntoUser(user, id);
     }
 
     /**

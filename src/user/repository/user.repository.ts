@@ -34,7 +34,7 @@ export class UserRepository extends Repository<User> {
      * @param userDto
      * @param id
      */
-    public async createUser(userDto: CreateUserDto, id: number)
+    public async updateGuestIntoUser(userDto: CreateUserDto, id: number)
     {
         const user = this.create({
             is_guest: false,

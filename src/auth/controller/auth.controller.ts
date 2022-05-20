@@ -43,6 +43,10 @@ export class AuthController {
         }
         const userGuest: User = await this._userService.getUserById(query.id);
 
+        if (!("is_guest" in userGuest)) {
+            return {error: "This user is bugged"};
+        }
+
         // If user is not a guest then we stop here
         if (!userGuest.is_guest) {
             return {error: "This User is not register as a guest user"};
@@ -57,6 +61,6 @@ export class AuthController {
         // Hash the password
         body.password = await hashPassword(body.password);
 
-        return await this._userService.createUser(body, userGuest.id);
+        return await this._userService.updateGuestIntoUser(body, userGuest.id);
     }
 }
