@@ -1,4 +1,15 @@
-import { Body, Controller, Post, Query, Request, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    HttpStatus,
+    Post,
+    Query,
+    Request,
+    Res,
+    UseGuards,
+    UsePipes,
+    ValidationPipe
+} from '@nestjs/common';
 import { UserService } from "../../user/service/user.service";
 import { hashPassword } from "../../shared/functions/hash-password";
 import { CreateUserDto } from "../../user/dto/create-user.dto";
@@ -34,33 +45,40 @@ export class AuthController {
 
     @Post('/register')
     @UsePipes(new ValidationPipe({ transform: true }))
-    public async register(@Body() body: CreateUserDto, @Query() query)
+    public async register(@Body() body: CreateUserDto, @Query() query, @Res() res)
     {
         // When a user register we might get the localstorage to get the data that are already store
         // But if we pass directly by Postman we don't have a guest user, so we return an error
         if (!query || !query.id) {
             return {error: "No localstorage passed"};
         }
+
+        // Get a user that have this email
+        const userWithSameEmail = await this._userService.getUserByParam({where: {email: body.email}});
+        if (userWithSameEmail) {
+            return res.status(HttpStatus.NOT_ACCEPTABLE).json({
+                error: 'This email has already been used'
+            });
+        }
+
         const userGuest: User = await this._userService.getUserById(query.id);
 
         if (!("is_guest" in userGuest)) {
             return {error: "This user is bugged"};
         }
 
-        // If user is not a guest then we stop here
-        if (!userGuest.is_guest) {
-            return {error: "This User is not register as a guest user"};
-        }
-
-        // Get a user that have this email
-        const userWithSameEmail = await this._userService.getUserByParam({where: {email: body.email}})
-        if (userWithSameEmail) {
-            return {error: "This Email has already been used"};
-        }
-
         // Hash the password
         body.password = await hashPassword(body.password);
 
-        return await this._userService.updateGuestIntoUser(body, userGuest.id);
+        // If user is not a guest then we stop here
+        if (!userGuest.is_guest) {
+            return res.status(HttpStatus.CREATED).json({
+                user: await this._userService.createUser(body)
+            });
+        }
+
+        return res.status(HttpStatus.CREATED).json({
+            user: await this._userService.updateGuestIntoUser(body, userGuest.id)
+        });
     }
 }

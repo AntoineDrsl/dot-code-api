@@ -28,6 +28,16 @@ export class UserRepository extends Repository<User> {
         return await this.save(user);
     }
 
+    public async createUser(createUser: CreateUserDto) {
+        const user = this.create({
+            slug: uuid(),
+            is_guest: true,
+            ...createUser
+        });
+
+        return await this.save(user);
+    }
+
     /**
      * Création d'un utilisateur entier
      *

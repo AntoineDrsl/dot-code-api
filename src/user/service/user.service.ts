@@ -88,6 +88,16 @@ export class UserService {
     }
 
     /**
+     * Create a user
+     *
+     * @param user
+     */
+    public createUser(user: CreateUserDto)
+    {
+        return this._userRepository.createUser(user);
+    }
+
+    /**
      * Create a user when he registers
      *
      * @param user
