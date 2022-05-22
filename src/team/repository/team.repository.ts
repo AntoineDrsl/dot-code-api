@@ -1,7 +1,8 @@
 import { uuid } from 'uuidv4';
-import { CreateTeamDto } from './../dto/create-team.dto';
+import { CreateTeamDto } from '../dto/create-team.dto';
 import { EntityRepository, Repository } from "typeorm";
 import { Team } from "../entity/team.entity";
+import { AddPointDto } from "../dto/add-point.dto";
 
 @EntityRepository(Team)
 export class TeamRepository extends Repository<Team> {
@@ -52,4 +53,14 @@ export class TeamRepository extends Repository<Team> {
         }
     }
 
+
+    public async addPoint(id: number, addPointDto: AddPointDto) {
+        const { points } = addPointDto;
+
+        const team = this.create({
+            points
+        });
+
+        return await this.update(id, team)
+    }
 }

@@ -95,7 +95,20 @@ export class EventGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
   public onTab(@ConnectedSocket() client: Socket, @MessageBody() body) {
     client.to(body.pin).emit('onTab', body);
   }
-  
+
+
+  /**
+   * When next exercice is reached
+   *
+   * @param client
+   * @param body
+   */
+  @SubscribeMessage('nextExercise')
+  public nextExercise(@ConnectedSocket() client: Socket, @MessageBody() body)
+  {
+      client.to(body.pin).emit('opponentSuccess');
+  }
+
   /** Reception des sockets */
 
   /**
@@ -235,23 +248,6 @@ export class EventGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     // return res;
   }
 
-  /**
-   * When next exercice is reached
-   * 
-   * @param client 
-   * @param body 
-   */
-  @SubscribeMessage('nextExercice')
-  public nextExercice(@ConnectedSocket() client: Socket, @MessageBody() body)
-  {
-  //   const res = this.roomController.nextExercice(body.pin, client.id);
-  //
-  //   if(!res.error) {
-  //     client.broadcast.emit('opponentSuccess');
-  //   }
-  //
-  //   return res;
-  }
 
   /**
    * Envoie des sockets

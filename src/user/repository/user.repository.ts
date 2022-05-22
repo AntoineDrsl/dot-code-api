@@ -49,7 +49,7 @@ export class UserRepository extends Repository<User> {
      * Update a user when he connects into a room
      *
      * @param id
-     * @param userUpdate
+     * @param connectInRoomUserDto
      * @param room
      */
     public async updateUserForRoom(id: number, connectInRoomUserDto: ConnectInRoomUserDto, room: Room)

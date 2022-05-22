@@ -1,11 +1,8 @@
-import { TeamService } from './../service/team.service';
-import { CreateTeamDto } from './../dto/create-team.dto';
-import { Delete, ValidationPipe } from '@nestjs/common';
-import { UsePipes } from '@nestjs/common';
-import { Team } from '../entity/team.entity';
-import { Body, Controller, Post, Get, Patch, Param } from '@nestjs/common';
+import { TeamService } from '../service/team.service';
+import { Body, Controller, Patch, Param } from '@nestjs/common';
 import { TeamRepository } from "../repository/team.repository";
 import { InjectRepository } from "@nestjs/typeorm";
+import { AddPointDto } from "../dto/add-point.dto";
 
 @Controller('team')
 export class TeamController {
@@ -14,5 +11,10 @@ export class TeamController {
         @InjectRepository(TeamRepository) 
         private readonly _teamService: TeamService
     ) {
+    }
+
+    @Patch(':id/add-point')
+    public addPoint(@Param('id') id: number, @Body() addPoint: AddPointDto) {
+        return this._teamService.addPoint(id, addPoint);
     }
 }

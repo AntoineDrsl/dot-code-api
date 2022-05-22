@@ -3,6 +3,7 @@ import { TeamRepository } from './../repository/team.repository';
 import { CreateTeamDto } from './../dto/create-team.dto';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
+import { AddPointDto } from "../dto/add-point.dto";
 
 @Injectable()
 export class TeamService {
@@ -10,11 +11,6 @@ export class TeamService {
         @InjectRepository(TeamRepository)
         private readonly _teamRepository: TeamRepository
     ) {}
-
-    public createTeam(createTeamDto: CreateTeamDto): Promise<Team>
-    {
-        return this._teamRepository.createTeam(createTeamDto);
-    }
 
     public createTeams(createTeamDtoList: CreateTeamDto[]): Promise<Team[]>
     {
@@ -32,5 +28,9 @@ export class TeamService {
         }
 
         return team;
+    }
+
+    public addPoint(id: number, addPointDto: AddPointDto) {
+        return this._teamRepository.addPoint(id, addPointDto);
     }
 }
