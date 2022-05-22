@@ -64,7 +64,9 @@ export class AuthController {
         const userGuest: User = await this._userService.getUserById(query.id);
 
         if (!("is_guest" in userGuest)) {
-            return {error: "This user is bugged"};
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+                error: 'The user is does not have a guest fiedl'
+            });
         }
 
         // Hash the password
