@@ -65,7 +65,7 @@ export class AuthController {
 
         if (!("is_guest" in userGuest)) {
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-                error: 'The user is does not have a guest fiedl'
+                error: 'The user is does not have a guest field'
             });
         }
 
