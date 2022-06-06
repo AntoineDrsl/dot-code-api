@@ -112,7 +112,7 @@ export class EventGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
   /** Reception des sockets */
 
   /**
-   * Get all rooms
+   * Get all roomss
    * 
    * @param client 
    * @returns 
