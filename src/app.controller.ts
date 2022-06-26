@@ -41,8 +41,8 @@ export class AppController {
         return 'Invalid language'
     }
 
-    let fileName: string = uuidv4() + '.' + extension;
-    let filePath: string = 'uploads/temp/' + fileName;
+    const fileName: string = uuidv4() + '.' + extension;
+    const filePath: string = 'uploads/temp/' + fileName;
     fs.appendFileSync(filePath, body.code);
 
     let result = {};

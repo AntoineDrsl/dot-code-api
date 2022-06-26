@@ -2,11 +2,11 @@ import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 
 const typeOrmConfig: TypeOrmModuleOptions = {
     type: 'postgres',
-    // host: process.env.POSTGRES_HOST || 'postgres-db',
-    port: +process.env.DB_PORT || 5432,
-    username: process.env.DB_USER || 'postgres',
-    password: process.env.DB_PASSWORD || 'postgres',
-    database: process.env.DB_NAME || 'doteCode',
+    host: process.env.DB_HOST,
+    port: +process.env.DB_PORT,
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
     entities: [__dirname + '/**/*.entity.ts', __dirname + '/**/*.entity.js'],
     migrationsRun: false,
     logging: true,
@@ -14,8 +14,9 @@ const typeOrmConfig: TypeOrmModuleOptions = {
     migrations: [__dirname + '/migration/**/*.ts', __dirname + '/migration/**/*.js'],
     synchronize: false,
     cli: {
-        migrationsDir: 'src/migration'
-    }
+      migrationsDir: 'src/migration'
+    },
+    autoLoadEntities: true,
 }
 
 export = typeOrmConfig
