@@ -4,13 +4,12 @@ import { UpdateUserPseudoDto } from './../dto/update-user-pseudo.dto';
 import { UpdateUserSocketDto } from '../dto/update-user-socket.dto';
 import { User } from './../entity/user.entity';
 import { RoomService } from 'src/room/service/room.service';
-import { UseGuards, ValidationPipe, Get } from '@nestjs/common';
+import { ValidationPipe, Get } from '@nestjs/common';
 import { UsePipes } from '@nestjs/common';
 import { Body, Controller, Post, Patch, Param } from '@nestjs/common';
 import { CreateGuestUserDto } from "../dto/create-guest-user.dto";
 import { UserService } from "../service/user.service";
 import { ConnectInRoomUserDto } from "../dto/connect-in-room-user.dto";
-import { JwtAuthGuard } from "../../auth/guard/jwt-auth.guard";
 
 @Controller('user')
 export class UserController {

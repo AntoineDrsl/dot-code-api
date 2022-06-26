@@ -9,7 +9,7 @@ export class HistoricGame {
     @Column()
     slug: string;
 
-    @OneToOne(type => User)
+    @OneToOne(() => User)
     @JoinColumn({ name: 'user_id' })
     user: number;
 

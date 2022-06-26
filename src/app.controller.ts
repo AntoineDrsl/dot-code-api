@@ -1,12 +1,11 @@
 import { NoPrintException } from './exceptions/NoPrintException';
 import { BadCodeException } from './exceptions/BadCodeException';
 import { BadResultException } from './exceptions/BadResultException';
-import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { execSync } from 'child_process';
 import {v4 as uuidv4} from 'uuid';
 import * as fs from 'fs';
-import { LocalAuthGuard } from "./auth/guard/local-auth.guard";
 
 @Controller()
 export class AppController {
@@ -14,7 +13,6 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    console.log('cc');
     return this.appService.getHello();
   }
 
@@ -43,8 +41,8 @@ export class AppController {
         return 'Invalid language'
     }
 
-    let fileName: string = uuidv4() + '.' + extension;
-    let filePath: string = 'uploads/temp/' + fileName;
+    const fileName: string = uuidv4() + '.' + extension;
+    const filePath: string = 'uploads/temp/' + fileName;
     fs.appendFileSync(filePath, body.code);
 
     let result = {};
