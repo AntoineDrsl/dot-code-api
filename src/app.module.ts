@@ -31,9 +31,10 @@ import { SharedModule } from './shared/shared.module';
         migrationsDir: 'src/migration'
       },
       autoLoadEntities: true,
-      ssl: {
-        rejectUnauthorized: false
-      }
+      ssl:
+        process.env.NODE_ENV === 'production'
+            ? { rejectUnauthorized: false }
+            : false,
     }),
 
     RoomModule,
