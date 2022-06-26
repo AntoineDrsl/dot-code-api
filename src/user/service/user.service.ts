@@ -1,5 +1,5 @@
-import { Team } from './../../team/entity/team.entity';
-import { UpdateUserPseudoDto } from './../dto/update-user-pseudo.dto';
+import { Team } from '../../team/entity/team.entity';
+import { UpdateUserPseudoDto } from '../dto/update-user-pseudo.dto';
 import { UpdateUserSocketDto } from '../dto/update-user-socket.dto';
 import { Room } from '../../room/entity/room.entity';
 import { Injectable, NotFoundException } from '@nestjs/common';
