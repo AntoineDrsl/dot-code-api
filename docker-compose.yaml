@@ -5,7 +5,7 @@ services:
     image: postgres
     container_name: ${DATABASE_HOST}
     ports:
-      - '${DB_PORT}:5432'
+      - '${DATABASE_PORT}:5432'
     environment:
       - POSTGRES_USER=${DATABASE_USER}
       - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
@@ -22,20 +22,9 @@ services:
     environment: 
       - DATABASE_PORT=5432
     ports:
-      - '${APP_PORT}:${APP_PORT}'
+      - '${PORT}:${PORT}'
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules/
     depends_on:
       - db
-
-  prod:
-    container_name: nest_js_prod
-    build:
-      context: .
-      target: production
-    command: npm run start:prod
-    ports:
-      - '${APP_PORT}:${APP_PORT}'
-    volumes:
-      - .:/usr/src/app
