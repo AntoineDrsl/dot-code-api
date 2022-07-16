@@ -1,3 +1,4 @@
+import { TeamService } from './../team/service/team.service';
 import { RoomService } from 'src/room/service/room.service';
 import {
   ConnectedSocket,
@@ -14,7 +15,8 @@ export class EventGateway {
   @WebSocketServer() server: Server;
 
   constructor(
-    private readonly _roomService: RoomService
+    private readonly _roomService: RoomService,
+    private readonly _teamService: TeamService
   ) {}
 
   @SubscribeMessage('joinRoom')
@@ -72,15 +74,41 @@ export class EventGateway {
       return { error: "Room mode not set" }
     }
 
-    // Check not empty team
-    if(!room.teams[0].users?.length || !room.teams[1].users?.length) {
-      return { error: "A team is empty" }
+    // Create teams
+    if(room.mode == 'vs') {
+      const teams = await this._teamService.createTeams([
+        {
+          room: room.id,
+          name: 'Ixion'
+        },
+        {
+          room: room.id,
+          name: 'Météion'
+        }
+      ]);
+      room.teams = teams;
+    } else if(room.mode == 'multi') {
+      // TODO - Coop
     }
 
     // Update room has_started
     this._roomService.changeHasStarted(room.id, true);
 
     this.server.sockets.in(body.pin).emit('launchGame', room);
+  }
+
+  @SubscribeMessage('validateTeams')
+  public async validateTeams(@ConnectedSocket() client: Socket, @MessageBody() body)
+  {
+    // Get room
+    const room = await this._roomService.getRoomDetailsByPin(body.pin);
+
+    // Check not empty team
+    if(!room.teams[0].users?.length || !room.teams[1].users?.length) {
+      return { error: "A team is empty" }
+    }
+
+    this.server.sockets.in(body.pin).emit('validateTeams', room);
   }
 
   @SubscribeMessage('userCursorChange')
