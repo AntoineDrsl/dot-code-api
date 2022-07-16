@@ -1,3 +1,4 @@
+import { UpdateRoomModeDto } from './../dto/update-room-mode';
 import { AccessEnum } from '../enums/access.enum';
 import { StatusEnum } from '../enums/status.enum';
 import { uuid } from 'uuidv4';
@@ -34,5 +35,22 @@ export class RoomRepository extends Repository<Room> {
 
         await this.save(room);
         return room;
+    }
+
+    /**
+     * Update room mode
+     * 
+     * @param id 
+     * @param updateRoomMode
+     */
+    public async updateRoomMode(id: number, updateRoomModeDto: UpdateRoomModeDto)
+    {
+        const { mode } = updateRoomModeDto;
+
+        const room = this.create({
+            mode
+        });
+
+        return await this.update(id, room);
     }
 }

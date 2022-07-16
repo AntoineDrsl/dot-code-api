@@ -40,6 +40,14 @@ export class EventGateway {
     client.broadcast.to(body.pin).emit('userJoinsRoom', room);
   }
 
+  @SubscribeMessage('changeRoomMode')
+  public async changeRoomMode(@ConnectedSocket() client: Socket, @MessageBody() body)
+  {
+    const room = await this._roomService.getRoomDetailsByPin(body.pin);
+
+    this.server.sockets.in(body.pin).emit('changeRoomMode', room);
+  }
+
   @SubscribeMessage('userJoinsTeam')
   public async userJoinsTeam(@ConnectedSocket() client: Socket, @MessageBody() body)
   {
@@ -54,15 +62,22 @@ export class EventGateway {
     // Get room
     const room = await this._roomService.getRoomDetailsByPin(body.pin);
 
+    // Check room not already started
     if(room.has_started) {
-      return { error: "Room has already started" };
+      return { error: "Room has already started" }
     }
 
+    // Check room mode is set
+    if(!room.mode) {
+      return { error: "Room mode not set" }
+    }
+
+    // Check not empty team
     if(!room.teams[0].users?.length || !room.teams[1].users?.length) {
       return { error: "A team is empty" }
     }
 
-    // Update room
+    // Update room has_started
     this._roomService.changeHasStarted(room.id, true);
 
     this.server.sockets.in(body.pin).emit('launchGame', room);

@@ -1,3 +1,4 @@
+import { UpdateRoomModeDto } from './../dto/update-room-mode';
 import { TeamService } from './../../team/service/team.service';
 import { UserService } from '../../user/service/user.service';
 import { CreateRoomDto } from '../dto/create-room.dto';
@@ -10,7 +11,8 @@ import {
     Body,
     Param,
     Get,
-    Delete
+    Delete,
+    Patch
 } from '@nestjs/common';
 import { Room } from "../entity/room.entity";
 
@@ -73,6 +75,18 @@ export class RoomController {
 
         return room;
     }
+
+    /**
+     * Update room mode
+     *
+     * @param id
+     * @param updateRoomMode
+     */
+     @Patch(':id/mode')
+     public async updateMode(@Param('id') id: number, @Body() updateRoomModeDto: UpdateRoomModeDto)
+     {
+         return this._roomService.updateRoomMode(id, updateRoomModeDto);
+     }
 
     @Delete('/:id')
     public deleteRoom(@Param('id') id: number): Promise<void> {

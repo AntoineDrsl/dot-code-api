@@ -1,1 +1,3 @@
-export enum GameTypeEnum {}
+export enum GameTypeEnum {
+    ERROR = 'error',
+}
