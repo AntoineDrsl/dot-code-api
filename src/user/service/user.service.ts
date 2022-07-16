@@ -71,9 +71,11 @@ export class UserService {
 
     public async updateUserTeam(id: number, team: Team)
     {
-        const user = await this._userRepository.update(id, {
-            team: team
-        });
+        const user = await this.getUserById(id);
+
+        user.team = team;
+        await this._userRepository.save(user);
+
         return user;
     }
 

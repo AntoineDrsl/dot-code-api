@@ -1,3 +1,4 @@
+import { UserService } from './../user/service/user.service';
 import { TeamService } from './../team/service/team.service';
 import { RoomService } from 'src/room/service/room.service';
 import {
@@ -16,7 +17,8 @@ export class EventGateway {
 
   constructor(
     private readonly _roomService: RoomService,
-    private readonly _teamService: TeamService
+    private readonly _teamService: TeamService,
+    private readonly _userService: UserService,
   ) {}
 
   @SubscribeMessage('joinRoom')
@@ -74,8 +76,13 @@ export class EventGateway {
       return { error: "Room mode not set" }
     }
 
-    // Create teams
+    if(room.users.length < 2) {
+      return { error: "At least 2 players are required" }
+    }
+
+    // By mode
     if(room.mode == 'vs') {
+      // Create teams
       const teams = await this._teamService.createTeams([
         {
           room: room.id,
@@ -88,7 +95,19 @@ export class EventGateway {
       ]);
       room.teams = teams;
     } else if(room.mode == 'multi') {
-      // TODO - Coop
+      // Create team
+      const teams = await this._teamService.createTeams([
+        {
+          room: room.id,
+          name: 'Ixion'
+        }
+      ]);
+      room.teams = teams;
+      
+      // Auto-connect users
+      room.users.forEach(async user => {
+        await this._userService.updateUserTeam(user.id, teams[0]);
+      })
     }
 
     // Update room has_started
