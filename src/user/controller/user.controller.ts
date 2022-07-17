@@ -79,6 +79,10 @@ export class UserController {
     {
         const room = await this._roomService.getRoomById(connectInRoomUserDto.room_id);
 
+        if(room.has_started) {
+            return { "error": "Cette partie a déjà commencé" }
+        }
+
         return this._userService.updateUserForRoom(id, connectInRoomUserDto, room);
     }
 

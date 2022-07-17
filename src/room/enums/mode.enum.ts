@@ -1,5 +1,5 @@
 export enum ModeEnum {
-    SOLO = "solo",
+    SOLO = 'solo',
     MULTI = 'multi',
     VS = 'vs'
 }

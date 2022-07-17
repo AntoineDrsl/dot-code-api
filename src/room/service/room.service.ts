@@ -1,3 +1,4 @@
+import { UpdateRoomModeDto } from './../dto/update-room-mode';
 import { CreateRoomDto } from '../dto/create-room.dto';
 import { User } from '../../user/entity/user.entity';
 import { Room } from '../entity/room.entity';
@@ -30,7 +31,7 @@ export class RoomService {
     {
         const room = await this._roomRepository.findOne({ 
             where: { pin }, 
-            relations: ['teams', 'teams.users', 'users'],
+            relations: ['teams', 'teams.users', 'users', 'owner'],
         });
 
         if(!room) {
@@ -70,6 +71,17 @@ export class RoomService {
             const owner = room.users[Math.floor(Math.random() * room.users.length)];
             await this._roomRepository.update(room.id, { owner: owner });
         }
+    }
+
+    /**
+     * Update room mode
+     * 
+     * @param id 
+     * @param updateRoomMode
+     */
+    public async updateRoomMode(id: number, updateRoomModeDto: UpdateRoomModeDto)
+    {
+        return this._roomRepository.updateRoomMode(id, updateRoomModeDto);
     }
 
     public async deleteRoom(id: number): Promise<void>
