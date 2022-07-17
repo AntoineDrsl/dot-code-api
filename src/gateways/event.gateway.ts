@@ -24,6 +24,7 @@ export class EventGateway {
   @SubscribeMessage('joinRoom')
   public async joinRoom(@ConnectedSocket() client: Socket, @MessageBody() body)
   {
+    console.log(client, body.pin);
     client.join(body.pin);
   }
 
@@ -151,6 +152,11 @@ export class EventGateway {
   @SubscribeMessage('onTab')
   public onTab(@ConnectedSocket() client: Socket, @MessageBody() body) {
     client.to(body.pin).emit('onTab', body);
+  }
+
+  @SubscribeMessage('newResult')
+  public newResult(@ConnectedSocket() client: Socket, @MessageBody() body) {
+    this.server.sockets.in(body.pin).emit('newResult', body);
   }
 
   /**
