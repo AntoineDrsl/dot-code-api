@@ -24,7 +24,6 @@ export class EventGateway {
   @SubscribeMessage('joinRoom')
   public async joinRoom(@ConnectedSocket() client: Socket, @MessageBody() body)
   {
-    console.log(client, body.pin);
     client.join(body.pin);
   }
 
