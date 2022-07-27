@@ -14,24 +14,15 @@ jobs:
     container: node:16.13.0
     steps:
       - uses: actions/checkout@v2
-      - name: Install packages
-        run: npm ci
       - name: Build
         run: npm run build
-      - name: Archive build result
-        uses: actions/upload-artifact@v3
-        with:
-          name: spacecode-api-modules
-          path: node_modules/
 
   test:
     runs-on: ubuntu-latest
     container: node:16.13.0
     steps:
-      - name: Download build project
-        uses: actions/download-artifact@v3
-        with:
-          name: spacecode-api-modules
-      - name: Launch unit tests
+      - name: Install packages
+        run: npm ci
+      - name: Launch unit test
         run: npm run test
 
