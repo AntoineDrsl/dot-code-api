@@ -7,6 +7,8 @@ RUN npm install
 
 COPY . .
 
+EXPOSE 3000
+
 FROM node:16.13.0 as production
 
 ARG NODE_ENV=production
