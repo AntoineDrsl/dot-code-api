@@ -39,3 +39,10 @@ jobs:
       - name: Launch unit test
         run: npm run lint
 
+  static-analyse:
+    runs-on: ubuntu-latest
+    container: node:16.13.0
+    steps:
+      - uses: actions/checkout@v2
+      - name: NPM Audit
+        run: npm audit --audit-level none
