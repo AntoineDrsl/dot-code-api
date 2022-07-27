@@ -83,6 +83,7 @@ export class RoomController {
      * @param updateRoomMode
      */
      @Patch(':id/mode')
+     @UsePipes(new ValidationPipe())
      public async updateMode(@Param('id') id: number, @Body() updateRoomModeDto: UpdateRoomModeDto)
      {
          return this._roomService.updateRoomMode(id, updateRoomModeDto);
