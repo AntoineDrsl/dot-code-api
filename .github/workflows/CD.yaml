@@ -9,13 +9,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: akhileshns/heroku-deploy@v3.12.12
+      - name: Production
+        uses: akhileshns/heroku-deploy@v3.12.12
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME_PROD }}
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_email: ${{secrets.HEROKU_EMAIL}}
-      - uses: akhileshns/heroku-deploy@v3.12.12
+      - name: Preprod
+        uses: akhileshns/heroku-deploy@v3.12.12
         if: ${{ github.ref == 'refs/heads/develop' }}
         with:
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME_PREPROD }}
