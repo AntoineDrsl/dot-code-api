@@ -11,13 +11,27 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: node:16.13.0
+    container: node:16.13.0
     steps:
       - uses: actions/checkout@v2
       - name: Install packages
         run: npm ci
       - name: Build
         run: npm run build
-      - name: Run test
+      - name: Archive build result
+        uses: actions/upload-artifact@v3
+        with:
+          name: spacecode-api-modules
+          path: node_modules/
+
+  test:
+    runs-on: ubuntu-latest
+    container: node:16.13.0
+    steps:
+      - name: Download build project
+        uses: actions/download-artifact@v3
+        with:
+          name: spacecode-api-modules
+      - name: Launch unit tests
         run: npm run test
+
