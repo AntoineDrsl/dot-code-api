@@ -11,16 +11,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
-      DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
-      DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
-      DATABASE_USER: ${{ secrets.DATABASE_USER }}
-      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-      PORT: ${{ secrets.PORT }}
+    container:
+      image: node:16.13.0
     steps:
       - uses: actions/checkout@v2
-      - name: Build docker compose
-        run: docker-compose up -d
+      - name: Install packages
+        run: npm ci
+      - name: Build
+        run: npm run build
       - name: Run test
-        run: docker-compose run dev npm run test
+        run: npm run test
