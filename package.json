@@ -50,11 +50,12 @@
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
     "socket.io-redis": "^6.1.1",
-    "uuidv4": "^6.2.12",
     "ts-node": "^10.0.0",
-    "tsconfig-paths": "^3.10.1"
+    "tsconfig-paths": "^3.10.1",
+    "uuidv4": "^6.2.12"
   },
   "devDependencies": {
+    "@compodoc/compodoc": "^1.1.19",
     "@nestjs/cli": "^8.0.0",
     "@nestjs/schematics": "^8.0.0",
     "@nestjs/testing": "^8.0.0",
