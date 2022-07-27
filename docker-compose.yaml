@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres
+    container_name: ${DATABASE_HOST}
+    ports:
+      - '${DATABASE_PORT}:5432'
+    environment:
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB=${DATABASE_NAME}
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+
+  dev:
+    container_name: nest_js_dev
+    build:
+      context: .
+      target: development
+    command: npm run start:dev
+    environment: 
+      - DATABASE_PORT=5432
+    ports:
+      - '${PORT}:${PORT}'
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules/
+    depends_on:
+      - db
