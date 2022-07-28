@@ -59,4 +59,3 @@ jobs:
         run: npm ci
       - name: Generate doc
         run: npx compodoc -p tsconfig.json -n "SpaceCode | API" -d docs
-
