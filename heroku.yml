@@ -3,11 +3,10 @@ setup:
     - plan: heroku-postgresql
 build:
   docker:
-    release:
+    worker:
       dockerfile: ./Dockerfile
       target: production
-    web: Dockerfile
-# release:
-#   image: worker
-#   command:
-#     - npm run typeorm:run
+release:
+  image: worker
+  command:
+    - npm run typeorm:run
