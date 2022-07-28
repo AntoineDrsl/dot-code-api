@@ -4,10 +4,9 @@ setup:
 build:
   docker:
     release:
-      dockerfile: Dockerfile
+      dockerfile: ./Dockerfile
       target: production
     web: Dockerfile
-    worker: ./Dockerfile
 release:
   image: worker
   command:
