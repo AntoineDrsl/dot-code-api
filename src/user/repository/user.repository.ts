@@ -33,7 +33,6 @@ export class UserRepository extends Repository<User> {
             is_guest: true,
             ...createUser
         });
-
         return await this.save(user);
     }
 
@@ -50,7 +49,7 @@ export class UserRepository extends Repository<User> {
             ...userDto
         });
 
-        return await this.update(id, user);
+        return await this.save({id: id, ...user});
     }
 
 
@@ -93,10 +92,10 @@ export class UserRepository extends Repository<User> {
 
     /**
      * Update user socket
-     * 
-     * @param id 
-     * @param updateUserPseudoDto 
-     * @returns 
+     *
+     * @param id
+     * @param updateUserPseudoDto
+     * @returns
      */
     public async updateUserPseudo(id: number, updateUserPseudoDto: UpdateUserPseudoDto)
     {

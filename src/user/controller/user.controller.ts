@@ -4,9 +4,7 @@ import { UpdateUserPseudoDto } from './../dto/update-user-pseudo.dto';
 import { UpdateUserSocketDto } from '../dto/update-user-socket.dto';
 import { User } from './../entity/user.entity';
 import { RoomService } from 'src/room/service/room.service';
-import { ValidationPipe, Get } from '@nestjs/common';
-import { UsePipes } from '@nestjs/common';
-import { Body, Controller, Post, Patch, Param } from '@nestjs/common';
+import { ValidationPipe, Get, UsePipes, Body, Controller, Post, Patch, Param } from '@nestjs/common';
 import { CreateGuestUserDto } from "../dto/create-guest-user.dto";
 import { UserService } from "../service/user.service";
 import { ConnectInRoomUserDto } from "../dto/connect-in-room-user.dto";
@@ -51,6 +49,7 @@ export class UserController {
      * @param updateUserSocketDto
      */
     @Patch(':id/socket')
+    @UsePipes(new ValidationPipe())
     public async updateSocket(@Param('id') id: number, @Body() updateUserSocketDto: UpdateUserSocketDto)
     {
         return this._userService.updateUserSocket(id, updateUserSocketDto);
@@ -63,6 +62,7 @@ export class UserController {
      * @param updateUserPseudoDto
      */
     @Patch(':id/pseudo')
+    @UsePipes(new ValidationPipe())
     public async updatePseudo(@Param('id') id: number, @Body() updateUserPseudoDto: UpdateUserPseudoDto)
     {
         return this._userService.updateUserPseudo(id, updateUserPseudoDto);
@@ -75,6 +75,7 @@ export class UserController {
      * @param connectInRoomUserDto
      */
     @Patch(':id/connect')
+    @UsePipes(new ValidationPipe())
     public async connect(@Param('id') id: number, @Body() connectInRoomUserDto: ConnectInRoomUserDto)
     {
         const room = await this._roomService.getRoomById(connectInRoomUserDto.room_id);
@@ -93,6 +94,7 @@ export class UserController {
      * @param updateUserDto
      */
     @Patch(':id/join-team')
+    @UsePipes(new ValidationPipe())
     public async joinTeam(@Param('id') id: number, @Body() updateUserTeamDto: UpdateUserTeamDto)
     {
         const team = await this._teamService.getTeamById(updateUserTeamDto.team_id);
