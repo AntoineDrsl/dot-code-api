@@ -7,8 +7,11 @@ WORKDIR /usr/src/app
 COPY package*.json /usr/src/app
 
 RUN npm install --only=production
+RUN pwd
 RUN ls
 RUN npm run build
+RUN pwd
+RUN ls
 
 COPY . /usr/src/app
 
