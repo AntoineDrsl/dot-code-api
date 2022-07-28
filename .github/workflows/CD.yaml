@@ -45,5 +45,7 @@ jobs:
         run: heroku git:remote --app $HEROKU_APP_NAME
         env:
           HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME_DOCKER_PREPROD }}
+      - name: Unshallow
+        run: git fetch --all --unshallow
       - name: Push to Heroku
         run: git push heroku HEAD:master --force
