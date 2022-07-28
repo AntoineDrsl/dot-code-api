@@ -10,5 +10,3 @@ release:
   image: web
   command:
     - npm run typeorm:run
-run:
-  web: npm run start:prod
