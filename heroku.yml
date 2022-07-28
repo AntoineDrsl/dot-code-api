@@ -6,8 +6,6 @@ build:
     release:
       dockerfile: ./Dockerfile
       target: production
-      command:
-        - npm run typeorm:run
     web: Dockerfile
 # release:
 #   image: worker
