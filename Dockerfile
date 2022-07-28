@@ -5,15 +5,10 @@ ENV NODE_ENV=${NODE_ENV}
 
 WORKDIR /usr/src/app
 COPY package*.json /usr/src/app/
-
 RUN npm install --only=production
-RUN pwd
-RUN ls
-RUN npm run build
-RUN pwd
-RUN ls
 
 COPY . /usr/src/app/
+RUN npm run build
 
 CMD ["npm", "run", "start:prod"]
 
