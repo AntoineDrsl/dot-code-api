@@ -46,6 +46,6 @@ jobs:
         env:
           HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME_DOCKER_PREPROD }}
       - name: Push to Heroku
-        run: git pull -f heroku HEAD:master
+        run: git pull heroku HEAD:master --ff-only
       - name: Push to Heroku
         run: git push -f heroku HEAD:master
