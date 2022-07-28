@@ -11,7 +11,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: 
+    container:
       image: node:16.13.0
     steps:
       - uses: actions/checkout@v2
@@ -22,7 +22,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    container: 
+    container:
       image: node:16.13.0
     steps:
       - uses: actions/checkout@v2
@@ -33,7 +33,7 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
-    container: 
+    container:
       image: node:16.13.0
     steps:
       - uses: actions/checkout@v2
@@ -44,7 +44,7 @@ jobs:
 
   static-analyse:
     runs-on: ubuntu-latest
-    container: 
+    container:
       image: node:16.13.0
     steps:
       - uses: actions/checkout@v2
@@ -52,10 +52,11 @@ jobs:
         run: npm audit --audit-level none
 
   documentation:
-    needs: [build, test, lint, static-analyse]
+    needs: [build]
     runs-on: ubuntu-latest
-    container: 
-      image: node:16.13.0
+    strategy:
+      matrix:
+        node-version: [ 16.13.0 ]
     steps:
       - uses: actions/checkout@v2
       - name: Install packages
