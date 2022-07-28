@@ -11,7 +11,7 @@ RUN npm run build
 
 COPY . ./
 
-CMD ["node", "dist/main"]
+CMD ["npm", "run", "start:prod"]
 
 FROM node:16.13.0 as development
 
