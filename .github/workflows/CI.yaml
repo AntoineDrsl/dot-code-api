@@ -5,6 +5,8 @@ on:
   # Triggers the workflow on push or pull request events but only for the main branch
   pull_request:
     branches: [ main, develop ]
+  push:
+    branches: [ feature/cypress ]
 
 jobs:
   build:
@@ -61,4 +63,19 @@ jobs:
         run: npm ci
       - name: Generate doc
         run: npx compodoc -p tsconfig.json -n "SpaceCode | API" -d docs
+
+  cypress-run:
+    runs-on: ubuntu-latest
+    container: cypress/browsers:node16.13.0-chrome80-ff73
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: Cypress run
+        uses: cypress-io/github-action@v4
+        with:
+          # Specify Browser since container image is compile with Firefox
+          browser: firefox
 
