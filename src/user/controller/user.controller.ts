@@ -78,6 +78,7 @@ export class UserController {
     @UsePipes(new ValidationPipe())
     public async connect(@Param('id') id: number, @Body() connectInRoomUserDto: ConnectInRoomUserDto)
     {
+        console.log(connectInRoomUserDto);
         const room = await this._roomService.getRoomById(connectInRoomUserDto.room_id);
 
         if(room.has_started) {

@@ -62,11 +62,8 @@ export class UserRepository extends Repository<User> {
      */
     public async updateUserForRoom(id: number, connectInRoomUserDto: ConnectInRoomUserDto, room: Room)
     {
-        const { pseudo } = connectInRoomUserDto;
-
         const user = this.create({
-            room: room,
-            pseudo
+            room: room
         });
 
         return await this.update(id, user);
