@@ -7,7 +7,7 @@ build:
       dockerfile: Dockerfile
       target: production
     web: Dockerfile
-    worker: .
+    worker: ./Dockerfile
 release:
   image: worker
   command:
