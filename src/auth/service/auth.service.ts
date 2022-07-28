@@ -20,7 +20,7 @@ export class AuthService {
      * @param email
      * @param password
      */
-    public async validateUser(email: string, password: string): Promise<any>
+    public async validateUser(email: string, password: string)
     {
         // Get User from service
         const user: User = await this._userService.getUserByParam({
